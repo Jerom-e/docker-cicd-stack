@@ -1,7 +1,7 @@
 services:
   dind:
     image: docker:20-dind
-    container_name: gitlab_dind_10.0.0.11
+    container_name: gitlab_dind_10.0.0.12
     restart: always
     privileged: true
     environment:
