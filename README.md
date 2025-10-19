@@ -12,6 +12,7 @@ This setup lets you deploy a local GitLab instance and a Docker-based GitLab Run
 - 🌐 **Custom Docker network** (`10.0.0.0/24`) with fixed IPs  
 - 🔐 Auto-generated **root password** and **runner registration token**  
 - 🎓 Ideal for **DevOps and CI/CD workshops** or student labs
+- ✅ Go to **http://git.devtools.local** to access the GitLab GUI.
 
 ---
 
