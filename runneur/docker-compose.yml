@@ -44,7 +44,7 @@ services:
       - "$GITLAB_HOME/runner:/etc/gitlab-runner:z"
     networks:
       dev-net:
-        ipv4_address: 10.0.0.11
+        ipv4_address: 10.0.0.13
 
 networks:
   dev-net:
