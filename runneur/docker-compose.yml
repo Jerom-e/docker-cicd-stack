@@ -1,0 +1,51 @@
+services:
+  dind:
+    image: docker:20-dind
+    container_name: gitlab_dind_10.0.0.11
+    restart: always
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    networks:
+      dev-net:
+        ipv4_address: 10.0.0.12
+
+  runner:
+    image: registry.gitlab.com/gitlab-org/gitlab-runner:alpine
+    container_name: gitlab_runner_10.0.0.11
+    restart: always
+    depends_on:
+      - dind
+    environment:
+      - DOCKER_HOST=tcp://dind:2375
+    volumes:
+      - "$GITLAB_HOME/runner:/etc/gitlab-runner:z"
+    networks:
+      dev-net:
+        ipv4_address: 10.0.0.11
+
+  register-runner:
+    image: registry.gitlab.com/gitlab-org/gitlab-runner:alpine
+    restart: 'no'
+    depends_on:
+      - runner
+    environment:
+      - CI_SERVER_URL=http://git.devtools.local
+      - REGISTRATION_TOKEN=${REG_TOKEN}
+    command: >
+      register
+      --non-interactive
+      --locked=false
+      --name=runner.devtools.local
+      --executor=docker
+      --docker-image=docker:20-dind
+      --docker-volumes=/var/run/docker.sock:/var/run/docker.sock
+    volumes:
+      - "$GITLAB_HOME/runner:/etc/gitlab-runner:z"
+    networks:
+      dev-net:
+        ipv4_address: 10.0.0.11
+
+networks:
+  dev-net:
+    external: true

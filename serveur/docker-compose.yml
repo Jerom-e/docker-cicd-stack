@@ -1,0 +1,25 @@
+services:
+  gitlab:
+    image: 'gitlab/gitlab-ce:latest'
+    container_name: gitlab_10.0.0.10
+    restart: always
+    hostname: 'git.devtools.local'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://git.devtools.local'
+        prometheus_monitoring['enable'] = true
+    ports:
+      - '80:80'
+      - '2222:22'
+    volumes:
+      - '$GITLAB_HOME/config:/etc/gitlab'
+      - '$GITLAB_HOME/logs:/var/log/gitlab'
+      - '$GITLAB_HOME/data:/var/opt/gitlab'
+    shm_size: '256m'
+    networks:
+      dev-net:
+        ipv4_address: 10.0.0.10
+     
+networks:
+  dev-net:
+    external: true
